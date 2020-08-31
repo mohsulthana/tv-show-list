@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 <template>
   <div class="hello">
     <h1>Shows</h1>
@@ -14,7 +15,11 @@
         <b-card-text>
           Rating : {{ show.rating.average }}
         </b-card-text>
-        <b-button href="#" variant="primary">Go somewhere</b-button>
+        <b-button
+          tag="router-link"
+          target="_blank"
+          :to="`/show-detail/${show.id}`"
+          variant="primary">Go somewhere</b-button>
       </b-card>
     </div>
   </div>
