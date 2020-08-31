@@ -3,8 +3,8 @@
     <h1>Shows</h1>
     <div v-for="show in movies" :key="show.id">
       <b-card
-        :title="show.title"
-        :img-src="show.image"
+        :title="show.name"
+        :img-src="show.image.medium"
         img-alt="Image"
         img-top
         tag="article"
@@ -12,9 +12,8 @@
         class="mb-2"
       >
         <b-card-text>
-          Rating : {{ show.rating }}
+          Rating : {{ show.rating.average }}
         </b-card-text>
-
         <b-button href="#" variant="primary">Go somewhere</b-button>
       </b-card>
     </div>
@@ -39,11 +38,7 @@ export default {
     fetchShows() {
       axios.get('http://api.tvmaze.com/shows')
         .then((response) => {
-          response.data.forEach((value) => {
-            this.movies.push({ title: value.name });
-            this.movies.push({ image: value.image.medium });
-            this.movies.push({ rating: value.rating.average });
-          });
+          this.movies = response.data;
         })
         .catch((error) => {
           console.error(error);
