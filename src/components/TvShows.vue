@@ -3,12 +3,11 @@
   <div class="hello">
     <h1>Search</h1>
       <b-form-input v-model="searchQuery"
-      @change="searchMovie" placeholder="Enter your search keyword"></b-form-input>
+      @keyup="searchMovie" placeholder="Enter your search keyword"></b-form-input>
       <div v-for="show in filteredResult" :key="show.id">
-        <!-- {{show.show.image.medium}} -->
       <b-card
         :title="show.show.name"
-        img-src="http://static.tvmaze.com/uploads/images/medium_portrait/31/78286.jpg"
+        :img-src="show.show.image.medium"
         img-alt="Image"
         img-top
         tag="article"
@@ -95,10 +94,9 @@ export default {
       axios.get(`http://api.tvmaze.com/search/shows?q=${this.searchQuery}`)
         .then((response) => {
           this.result = response.data;
-          console.log(response);
         })
         .catch((error) => {
-          console.log(error);
+          console.error(error);
         });
     },
     // filteredShows() {
@@ -138,7 +136,7 @@ export default {
           // });
         })
         .catch((error) => {
-          console.log(error);
+          console.error(error);
         });
     },
     fetchShows() {
