@@ -2,8 +2,29 @@
 <template>
   <div class="hello">
     <h1>Search</h1>
-      <b-form-input v-model="searchQuery" @change="searchMovie" placeholder="Enter your search keyword"></b-form-input>
-      <div class="mt-2">Value: {{ filteredResult }}</div>
+      <b-form-input v-model="searchQuery"
+      @change="searchMovie" placeholder="Enter your search keyword"></b-form-input>
+      <div v-for="show in filteredResult" :key="show.id">
+        <!-- {{show.show.image.medium}} -->
+      <b-card
+        :title="show.show.name"
+        img-src="http://static.tvmaze.com/uploads/images/medium_portrait/31/78286.jpg"
+        img-alt="Image"
+        img-top
+        tag="article"
+        style="max-width: 20rem;"
+        class="mb-2"
+      >
+        <b-card-text>
+          Rating : {{ show.show.rating.average }}
+        </b-card-text>
+        <b-button
+          tag="router-link"
+          target="_blank"
+          :to="`/show-detail/${show.show.id}`"
+          variant="primary">Go somewhere</b-button>
+      </b-card>
+    </div>
     <hr>
     <h1>Filtered Shows</h1>
     <div v-for="genre in genres" :key="genre.index">
@@ -51,7 +72,7 @@ export default {
     msg: String,
   },
   mounted() {
-    // this.fetchShows();
+    this.fetchShows();
     this.fetchGenres();
   },
   computed: {
