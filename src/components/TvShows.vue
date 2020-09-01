@@ -83,9 +83,7 @@ export default {
         return result;
       }
 
-      result = result.filter((item) => {
-        return item;
-      });
+      result = result.filter((item) => item);
       return result;
     },
   },
