@@ -1,6 +1,10 @@
 /* eslint-disable max-len */
 <template>
   <div class="hello">
+    <h1>Search</h1>
+      <b-form-input v-model="searchQuery" @change="searchMovie" placeholder="Enter your search keyword"></b-form-input>
+      <div class="mt-2">Value: {{ filteredResult }}</div>
+    <hr>
     <h1>Filtered Shows</h1>
     <div v-for="genre in genres" :key="genre.index">
       {{genre}}
@@ -39,29 +43,64 @@ export default {
   data: () => ({
     movies: [],
     genres: [],
+    result: [],
     featuredMovies: [],
+    searchQuery: '',
   }),
   props: {
     msg: String,
   },
   mounted() {
-    this.fetchShows();
+    // this.fetchShows();
     this.fetchGenres();
   },
-  methods: {
-    filteredShows() {
-      this.genres.forEach((value) => {
-        axios.get(`http://api.tvmaze.com/shows?genres=${value}`)
-          .then((resp) => {
-            const data = resp.data.splice(0, 4);
-            this.featuredMovies.push(data);
-            // debugger;
-          })
-          .catch((error) => {
-            console.error(error);
-          });
+  computed: {
+    filteredResult() {
+      let { result } = this;
+      const { searchQuery } = this;
+
+      if (!searchQuery) {
+        return result;
+      }
+
+      result = result.filter((item) => {
+        return item;
       });
+      return result;
     },
+  },
+  methods: {
+    searchMovie() {
+      axios.get(`http://api.tvmaze.com/search/shows?q=${this.searchQuery}`)
+        .then((response) => {
+          this.result = response.data;
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    // filteredShows() {
+    //   const reqOne = `http://api.tvmaze.com/shows?genre=${this.genres[0]}`;
+    //   const reqTwo = `http://api.tvmaze.com/shows?genre=${this.genres[1]}`;
+    //   const reqThree = `http://api.tvmaze.com/shows?genre=${this.genres[2]}`;
+    //   const reqFour = `http://api.tvmaze.com/shows?genre=${this.genres[3]}`;
+
+    //   const promise1 = axios.get(reqOne);
+    //   const promise2 = axios.get(reqTwo);
+    //   const promise3 = axios.get(reqThree);
+    //   const promise4 = axios.get(reqFour);
+
+    //   axios.all([promise1, promise2, promise3, promise4])
+    //     .then(axios.spread((...response) => {
+    //       console.log(response);
+    //     }))
+    //     .catch((error) => {
+    //       console.error(error);
+    //     });
+
+    //   // axios.get(`http://api.tvmaze.com/shows?genre=${this.genres[0]}`)
+    // },
     fetchGenres() {
       axios.get('http://api.tvmaze.com/shows')
         .then((response) => {
@@ -73,10 +112,9 @@ export default {
           });
           this.genres = [...new Set(genreResp)];
           this.genres = this.genres.splice(0, 4);
-          console.log(this.genres);
-          this.$nextTick(() => {
-            this.filteredShows();
-          });
+          // this.$nextTick(() => {
+          //   this.filteredShows();
+          // });
         })
         .catch((error) => {
           console.log(error);
