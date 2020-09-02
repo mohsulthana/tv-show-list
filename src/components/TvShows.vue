@@ -76,15 +76,14 @@ export default {
   },
   computed: {
     filteredResult() {
-      let { result } = this;
-      const { searchQuery } = this;
+      const res = this.result;
+      const search = this.searchQuery;
 
-      if (!searchQuery) {
-        return result;
+      if (!search) {
+        return res;
       }
 
-      result = result.filter((item) => item);
-      return result;
+      return res.filter((item) => item.show.name.toLowerCase().includes(search.toLowerCase()));
     },
   },
   methods: {
