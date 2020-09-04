@@ -7,7 +7,6 @@
       <div v-for="show in filteredResult" :key="show.id">
       <b-card
         :title="show.show.name"
-        :img-src="show.show.image.medium"
         img-alt="Image"
         img-top
         tag="article"
@@ -83,7 +82,8 @@ export default {
         return res;
       }
 
-      return res.filter((item) => item.show.name.toLowerCase().includes(search.toLowerCase()));
+      // return res.filter((item) => item.show.name.toLowerCase().includes(search.toLowerCase()));
+      return res.filter((item) => item.show.name.toLowerCase().indexOf(search.toLowerCase() >= 0));
     },
   },
   methods: {
